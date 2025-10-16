@@ -1,2 +1,4 @@
 # hse_webdev_hws
-HWs for web development course
+HWs for HSE Web Development course
+
+Author: Semyon Bosonogov
