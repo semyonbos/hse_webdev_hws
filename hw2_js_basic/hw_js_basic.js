@@ -1,4 +1,4 @@
-// JS basic update: скрипт для отзывчивой смены дизайна и мобильного меню
+// JS basic update final: скрипт для отзывчивой смены дизайна и мобильного меню
 // Mobile menu
 const menuToggle = document.querySelector('.mobile-menu-toggle');
 const navMenu = document.querySelector('.nav-menu');
