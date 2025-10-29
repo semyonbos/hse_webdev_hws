@@ -74,9 +74,6 @@ class WeddingApp {
         // Инициализируем плавную прокрутку
         new SmoothScroll();
 
-        // Инициализируем параллакс для hero секции
-        new ParallaxEffect('.hero');
-
         console.log('✅ Interactive features initialized');
     }
 }
