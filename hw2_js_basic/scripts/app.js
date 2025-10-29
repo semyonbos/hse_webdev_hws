@@ -1,10 +1,10 @@
 // Точка входа: координирует все модули и инициализирует страницу
 
 // Импортируем необходимые модули
-import { weddingData } from './modules/data.js';           // Данные
-import { DOMBuilder } from './modules/domBuilder.js';      // Создание DOM элементов
-import { MobileMenu } from './modules/mobileMenu.js';      // Мобильное меню
-import { SmoothScroll } from './modules/smoothScroll.js'; // Плавная прокрутка
+import { weddingData } from './scripts/data.js';           // Данные
+import { DOMBuilder } from './scripts/dom.js';      // Создание DOM элементов
+import { MobileMenu } from './scripts/mobile_menu.js';      // Мобильное меню
+import { SmoothScroll } from './scripts/scroll.js'; // Плавная прокрутка
 
 /**
  * WeddingApp - главный класс приложения
@@ -56,7 +56,7 @@ class WeddingApp {
         // Добавляем все секции в body
         body.append(nav, hero, contentGrid, registry, author);
 
-        console.log('✅ Page built dynamically from data');
+        console.log('Page built dynamically from data');
     }
 
     /**
@@ -73,7 +73,7 @@ class WeddingApp {
         // Инициализируем плавную прокрутку
         new SmoothScroll();
 
-        console.log('✅ Interactive features initialized');
+        console.log('Interactive features initialized');
     }
 }
 
