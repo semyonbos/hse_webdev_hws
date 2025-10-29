@@ -5,7 +5,6 @@ import { weddingData } from './modules/data.js';           // Данные
 import { DOMBuilder } from './modules/domBuilder.js';      // Создание DOM элементов
 import { MobileMenu } from './modules/mobileMenu.js';      // Мобильное меню
 import { SmoothScroll } from './modules/smoothScroll.js'; // Плавная прокрутка
-import { ParallaxEffect } from './modules/parallax.js';   // Параллакс эффект
 
 /**
  * WeddingApp - главный класс приложения
