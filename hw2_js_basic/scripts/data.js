@@ -1,15 +1,33 @@
-// data for page script
+// Экспортируем объект со всеми данными для свадебного сайта
+
+/**
+ * weddingData - главный объект с данными
+ * Содержит всю информацию о паре, мероприятии, навигации и секциях сайта
+ */
 export const weddingData = {
+    // Информация о паре
     couple: {
-        bride: "Jenny",
-        groom: "Jason",
-        initials: "J & J"
+        bride: "Jenny",           // Имя невесты
+        groom: "Jason",           // Имя жениха
+        initials: "J & J"         // Инициалы для логотипа
     },
+
+    // Информация о мероприятии
     event: {
-        date: "Saturday, September 20, 2025",
-        venue: "The Golden Elm Manor",
-        location: "St. Augustine, New York"
+        date: "Saturday, September 20, 2025",      // Дата свадьбы
+        venue: "The Golden Elm Manor",             // Место проведения
+        location: "St. Augustine, New York"        // Город/адрес
     },
+
+    // Массив пунктов навигационного меню
+    navigation: [
+        { href: "#home", label: "HOME" },
+        { href: "#our-story", label: "OUR STORY" },
+        { href: "#details", label: "DETAILS" },
+        { href: "#rsvp", label: "RSVP" }
+    ],
+
+    // Массив секций контента (карточки)
     sections: [
         {
             id: "our-story",
@@ -36,12 +54,8 @@ export const weddingData = {
             theme: "beige"
         }
     ],
-    navigation: [
-        { href: "#home", label: "HOME" },
-        { href: "#our-story", label: "OUR STORY" },
-        { href: "#details", label: "DETAILS" },
-        { href: "#rsvp", label: "RSVP" }
-    ],
+
+    // Данные для секции реестра подарков
     registry: {
         title: "Registry",
         description: "Your presence is the most cherished gift. Should you wish to contribute, we've created a honeymoon registry to help us embark on a memorable adventure to the Amalfi Coast.",
