@@ -3,9 +3,13 @@
 export class RegistrationForm {
     /**
      * constructor - инициализирует обработку формы
+     * @param {GeolocationService} geolocation - сервис геолокации
+     * @param {StorageService} storage - сервис хранилища
      */
-    constructor() {
+    constructor(geolocation, storage) {
         this.formData = {};
+        this.geolocation = geolocation;
+        this.storage = storage;
         this.init();
     }
 
@@ -15,6 +19,12 @@ export class RegistrationForm {
     init() {
         this.setupFormHandlers();
         this.setupRealTimeValidation();
+        this.setupGeolocationHandler();
+        this.setupAutoSave();
+        this.setupRestoreListener();
+        
+        // Восстанавливаем сохранённые данные
+        this.restoreSavedData();
     }
 
     /**
@@ -28,11 +38,6 @@ export class RegistrationForm {
                 e.preventDefault();
                 this.handleFormSubmit(form);
             });
-
-            // Сохраняем данные при изменении полей
-            form.addEventListener('input', (e) => {
-                this.saveFormData(form);
-            });
         });
     }
 
@@ -45,6 +50,85 @@ export class RegistrationForm {
                 this.validateField(e.target);
             }
         });
+    }
+
+    /**
+     * setupGeolocationHandler - настраивает обработчик геолокации
+     */
+    setupGeolocationHandler() {
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('geolocation-btn')) {
+                this.handleGeolocationClick(e.target);
+            }
+        });
+    }
+
+    /**
+     * setupAutoSave - настраивает автоматическое сохранение
+     */
+    setupAutoSave() {
+        // Сохраняем при изменении полей
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('form-input') || 
+                e.target.classList.contains('form-textarea') ||
+                e.target.classList.contains('form-checkbox')) {
+                this.saveFormData();
+            }
+        });
+
+        // Сохраняем при изменении селектов
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('form-input') && e.target.tagName === 'SELECT') {
+                this.saveFormData();
+            }
+        });
+    }
+
+    /**
+     * setupRestoreListener - настраивает слушатель для восстановления данных
+     */
+    setupRestoreListener() {
+        document.addEventListener('restoreSavedData', (e) => {
+            this.restoreSavedData(e.detail.savedData);
+        });
+    }
+
+    /**
+     * handleGeolocationClick - обрабатывает клик по кнопке геолокации
+     * @param {HTMLElement} button - нажатая кнопка
+     */
+    async handleGeolocationClick(button) {
+        const originalText = button.textContent;
+        
+        try {
+            button.textContent = '🌍 Detecting...';
+            button.disabled = true;
+
+            // Запрашиваем разрешение
+            const permission = await this.geolocation.requestPermission();
+            
+            if (permission === 'denied') {
+                throw new Error('Location permission denied');
+            }
+
+            // Получаем город
+            const city = await this.geolocation.getCurrentCity();
+            
+            // Заполняем поле location
+            const locationInput = document.querySelector('input[name="location"]');
+            if (locationInput) {
+                locationInput.value = city;
+                this.saveFormData();
+                this.showToast(`Location detected: ${city}`, 'success');
+            }
+
+        } catch (error) {
+            console.warn('Geolocation error:', error);
+            this.showToast(error.message, 'error');
+        } finally {
+            button.textContent = originalText;
+            button.disabled = false;
+        }
     }
 
     /**
@@ -103,22 +187,64 @@ export class RegistrationForm {
 
     /**
      * saveFormData - сохраняет данные формы
-     * @param {HTMLElement} form - форма для сохранения
      */
-    saveFormData(form) {
-        const formData = new FormData(form);
-        const screenId = form.id.replace('-form', '');
+    saveFormData() {
+        const forms = document.querySelectorAll('.registration-form');
         
-        this.formData[screenId] = {};
-        formData.forEach((value, key) => {
-            this.formData[screenId][key] = value;
+        forms.forEach(form => {
+            const formData = new FormData(form);
+            const screenId = form.id.replace('-form', '');
+            
+            this.formData[screenId] = {};
+            formData.forEach((value, key) => {
+                this.formData[screenId][key] = value;
+            });
+
+            // Сохраняем чекбоксы
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                this.formData[screenId][checkbox.name] = checkbox.checked;
+            });
         });
 
+        // Сохраняем в Local Storage
+        this.storage.saveData('weddingRegistration', this.formData);
+        
         // Обновляем summary на последнем экране
         this.updateReviewSummary();
+    }
+
+    /**
+     * restoreSavedData - восстанавливает сохранённые данные
+     * @param {Object} savedData - данные для восстановления
+     */
+    restoreSavedData(savedData = null) {
+        const dataToRestore = savedData || this.storage.getData('weddingRegistration');
         
-        // Сохраняем в localStorage
-        localStorage.setItem('weddingRegistrationData', JSON.stringify(this.formData));
+        if (!dataToRestore) {
+            return;
+        }
+
+        this.formData = dataToRestore;
+
+        Object.keys(this.formData).forEach(screenId => {
+            const form = document.getElementById(`${screenId}-form`);
+            if (form) {
+                const screenData = this.formData[screenId];
+                Object.keys(screenData).forEach(fieldName => {
+                    const input = form.querySelector(`[name="${fieldName}"]`);
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = screenData[fieldName];
+                        } else {
+                            input.value = screenData[fieldName];
+                        }
+                    }
+                });
+            }
+        });
+
+        this.updateReviewSummary();
     }
 
     /**
@@ -129,14 +255,19 @@ export class RegistrationForm {
         if (reviewElement) {
             let summaryHTML = '<div class="summary-content">';
             
-            Object.keys(this.formData).forEach(screenId => {
-                const screenData = this.formData[screenId];
-                Object.keys(screenData).forEach(field => {
-                    if (screenData[field]) {
-                        summaryHTML += `<p><strong>${this.formatFieldName(field)}:</strong> ${screenData[field]}</p>`;
-                    }
+            if (Object.keys(this.formData).length === 0) {
+                summaryHTML += '<p class="summary-empty">No data entered yet. Your registration details will appear here as you fill out the forms.</p>';
+            } else {
+                Object.keys(this.formData).forEach(screenId => {
+                    const screenData = this.formData[screenId];
+                    Object.keys(screenData).forEach(field => {
+                        if (screenData[field] && screenData[field] !== 'false') {
+                            const displayValue = screenData[field] === 'true' ? 'Yes' : screenData[field];
+                            summaryHTML += `<p><strong>${this.formatFieldName(field)}:</strong> ${displayValue}</p>`;
+                        }
+                    });
                 });
-            });
+            }
 
             summaryHTML += '</div>';
             reviewElement.innerHTML = summaryHTML;
@@ -171,8 +302,15 @@ export class RegistrationForm {
         });
 
         if (isValid) {
-            this.saveFormData(form);
+            this.saveFormData();
             this.showSuccessMessage();
+            
+            // Очищаем сохранённые данные после успешной отправки
+            setTimeout(() => {
+                this.storage.clearData('weddingRegistration');
+            }, 2000);
+        } else {
+            this.showToast('Please fix the errors before submitting.', 'error');
         }
     }
 
@@ -185,6 +323,7 @@ export class RegistrationForm {
         successMessage.innerHTML = `
             <h3>🎉 Registration Complete!</h3>
             <p>Thank you for registering with Wedding Registry Pro. We've sent a confirmation email with next steps.</p>
+            <p><small>Your data has been saved locally for 7 days.</small></p>
             <button class="success-button" onclick="location.reload()">Start New Registration</button>
         `;
         
@@ -192,5 +331,52 @@ export class RegistrationForm {
         
         // Прокручиваем к сообщению об успехе
         successMessage.scrollIntoView({ behavior: 'smooth' });
+
+        // Показываем тост
+        this.showToast('Registration submitted successfully!', 'success');
+    }
+
+    /**
+     * showToast - показывает всплывающее уведомление
+     * @param {string} message - текст сообщения
+     * @param {string} type - тип сообщения (success, error, warning)
+     */
+    showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <span class="toast-icon">${this.getToastIcon(type)}</span>
+            <span class="toast-message">${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Анимация появления
+        setTimeout(() => toast.classList.add('show'), 100);
+        
+        // Автоматическое скрытие
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (document.body.contains(toast)) {
+                    toast.remove();
+                }
+            }, 300);
+        }, 4000);
+    }
+
+    /**
+     * getToastIcon - возвращает иконку для тоста
+     * @param {string} type - тип сообщения
+     * @returns {string} - HTML иконки
+     */
+    getToastIcon(type) {
+        const icons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️',
+            info: 'ℹ️'
+        };
+        return icons[type] || icons.info;
     }
 }

@@ -6,3 +6,6 @@ Author: Semyon Bosonogov
 Done HWs:
 - HW1 - HTML/CSS
 - HW2 - JS + Dynamic pages
+
+In progress:
+- HW3 - API

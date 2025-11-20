@@ -1,4 +1,4 @@
-// Экспортируем объект со всеми данными для сервиса регистрации свадеб
+// Объект со всеми данными для сервиса регистрации свадеб
 
 /**
  * serviceData - главный объект с данными
@@ -42,7 +42,7 @@ export const serviceData = {
             fields: [
                 { type: "date", name: "weddingDate", label: "Wedding Date", required: true },
                 { type: "text", name: "venue", label: "Venue Name", required: true },
-                { type: "text", name: "location", label: "City & State", required: true },
+                { type: "location", name: "location", label: "City & State", required: true },
                 { type: "number", name: "guestCount", label: "Expected Guest Count", required: true }
             ]
         },
@@ -69,7 +69,7 @@ export const serviceData = {
         }
     ],
 
-    // Features section data
+    // features section data
     features: {
         title: "Why Choose Our Service",
         subtitle: "Everything you need for seamless wedding planning",
@@ -107,7 +107,7 @@ export const serviceData = {
         ]
     },
 
-    // Contact section data
+    // contact section data
     contact: {
         title: "Get In Touch",
         subtitle: "We're here to help make your wedding planning stress-free",

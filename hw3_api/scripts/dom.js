@@ -283,12 +283,26 @@ export class DOMBuilder {
                     input = DOMBuilder.createElement('div', 'review-summary');
                     input.textContent = 'Your registration details will appear here...';
                     break;
+                case 'location':
+                    const locationGroup = DOMBuilder.createElement('div', 'location-group');
+                    input = DOMBuilder.createElement('input', 'form-input');
+                    input.type = field.type;
+                    input.name = field.name;
+                    input.required = field.required;
+
+                    const geolocationButton = DOMBuilder.createElement('button', 'geolocation-btn', '📍 Auto-detect');
+                    geolocationButton.type = 'button';
+                    geolocationButton.title = 'Detect your current location';
+
+                    locationGroup.append(input, geolocationButton);
+                    fieldGroup.append(label, locationGroup);
+                    break;
                 default:
                     input = DOMBuilder.createElement('input', 'form-input');
                     input.type = field.type;
             }
 
-            if (field.type !== 'checkbox' && field.type !== 'review') {
+            if (field.type !== 'location' && field.type !== 'checkbox' && field.type !== 'review') {
                 input.name = field.name;
                 input.required = field.required || false;
                 fieldGroup.append(label, input);
@@ -311,7 +325,7 @@ export class DOMBuilder {
      */
     static createAuthorSection() {
         const section = this.createElement('section', 'author');
-        const text1 = this.createElement('p', 'author__text', 'Wedding Registry Service by Semyon Bosonogov, 2025;');
+        const text1 = this.createElement('p', 'author__text', 'Wedding Registry Service by Semyon Bosonogov, 2025');
         const text2 = this.createElement('p', 'author__text', 'AI tools were used to assist in the development of this service');
         section.append(text1, text2);
         return section;

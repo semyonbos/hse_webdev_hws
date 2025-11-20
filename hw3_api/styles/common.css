@@ -1,7 +1,7 @@
 /*  
-Wedding Registry Service
+Wedding Registry Service: API upd
 Выполнено Босоноговым Семёном
-Для помощи в написании скрипта и динамичных изменений были использованы ИИ-инструменты
+Для помощи в написании скрипта были использованы ИИ-инструменты
 */
 
 /* variables for style */
@@ -243,7 +243,7 @@ transform: translateY(-2px);
 box-shadow: var(--shadow-medium);
 }
 
-/* Service Screens */
+/* service screens */
 .service-screens {
 max-width: 800px;
 margin: var(--space-3xl) auto;
@@ -293,7 +293,7 @@ text-align: center;
 line-height: 1.6;
 }
 
-/* Form Styles */
+/* form styles */
 .registration-form {
 display: flex;
 flex-direction: column;
@@ -377,7 +377,7 @@ border-bottom: none;
 margin-bottom: 0;
 }
 
-/* Navigation Buttons */
+/* navigation buttons */
 .screen-navigation {
 display: flex;
 justify-content: space-between;
@@ -421,7 +421,7 @@ transform: translateY(-2px);
 box-shadow: var(--shadow-medium);
 }
 
-/* Success Message */
+/* success message */
 .success-message {
 background: var(--color-warm-beige);
 border-radius: 12px;
@@ -456,7 +456,7 @@ background: var(--color-dark-brown);
 transform: translateY(-2px);
 }
 
-/* Mobile Responsive */
+/* mobile responsive */
 @media (max-width: 768px) {
     .service-screens {
         margin: var(--space-xl) auto;
@@ -481,7 +481,7 @@ transform: translateY(-2px);
     }
 }
 
-/* author */
+/* author section */
 .author{
     display: flex;
     flex-direction: column;
@@ -493,7 +493,7 @@ transform: translateY(-2px);
     font-size: 0.9rem;
 }
 
-/* Features Section */
+/* features section */
 .features-section {
     background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--color-warm-beige) 100%);
     padding: var(--space-3xl) var(--space-md);
@@ -581,7 +581,7 @@ transform: translateY(-2px);
     font-size: 1rem;
 }
 
-/* Contact Section */
+/* contact section */
 .contact-section {
     background: linear-gradient(135deg, var(--color-warm-beige) 0%, var(--color-secondary-bg) 100%);
     padding: var(--space-3xl) var(--space-md);
@@ -771,7 +771,7 @@ transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
 
-/* Mobile Responsive for new sections */
+/* mobile responsive for new sections */
 @media (max-width: 768px) {
     .features-grid {
         grid-template-columns: 1fr;
@@ -808,4 +808,190 @@ transform: translateY(-2px);
     .social-links {
         flex-direction: column;
     }
+}
+
+/* geolocation button styles */
+.location-group {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.geolocation-btn {
+    padding: 0 20px;
+    background: var(--color-soft-brown);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.geolocation-btn:hover:not(:disabled) {
+    background: var(--color-dark-brown);
+    transform: translateY(-1px);
+}
+
+.geolocation-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* toast notifications */
+.toast {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-medium);
+    border-left: 4px solid var(--color-accent-gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 350px;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 10000;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-success {
+    border-left-color: var(--color-success);
+}
+
+.toast-error {
+    border-left-color: var(--color-error);
+}
+
+.toast-warning {
+    border-left-color: #ff9800;
+}
+
+.toast-icon {
+    font-size: 1.2rem;
+}
+
+.toast-message {
+    flex: 1;
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+}
+
+/* Restore Notification */
+.restore-notification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--color-accent-gold), #e6c64d);
+    color: white;
+    padding: 15px 20px;
+    z-index: 10001;
+    box-shadow: var(--shadow-medium);
+}
+
+.notification-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.notification-content p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.notification-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-restore, .btn-dismiss {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-restore {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-restore:hover {
+    background: #2c5e2e;
+}
+
+.btn-dismiss {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.btn-dismiss:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* summary styles */
+.summary-empty {
+    color: var(--color-soft-brown);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* mobile responsive for new elements */
+@media (max-width: 768px) {
+    .location-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .geolocation-btn {
+        min-width: auto;
+        padding: 12px;
+    }
+    
+    .toast {
+        left: 20px;
+        right: 20px;
+        max-width: none;
+        transform: translateY(-100px);
+    }
+    
+    .toast.show {
+        transform: translateY(0);
+    }
+    
+    .notification-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .notification-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* success message update */
+.success-message small {
+    color: var(--color-soft-brown);
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 10px;
 }
