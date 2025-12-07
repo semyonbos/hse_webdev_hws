@@ -1,0 +1,76 @@
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--color-warm-beige) 0%,
+    var(--color-secondary-bg) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23d4af37" opacity="0.1"/><circle cx="80" cy="30" r="1.5" fill="%238b7355" opacity="0.1"/><circle cx="60" cy="70" r="1" fill="%23d4af37" opacity="0.1"/><circle cx="30" cy="80" r="2" fill="%238b7355" opacity="0.05"/></svg>') repeat;
+  pointer-events: none;
+}
+
+.heroContent {
+  max-width: 800px;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.heroTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+}
+
+.heroSubtitle {
+  font-size: 1.3rem;
+  color: var(--color-soft-brown);
+  margin-bottom: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.heroTagline {
+  font-size: 1.1rem;
+  color: var(--color-dark-brown);
+  margin-bottom: 3rem;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.heroCta {
+  padding: 1.5rem 3rem;
+  background: var(--color-accent-gold);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.heroCta:hover {
+  background: var(--color-dark-brown);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
