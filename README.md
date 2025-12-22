@@ -6,6 +6,9 @@ Author: Semyon Bosonogov
 Done HWs:
 - HW1 - HTML/CSS
 - HW2 - JS + Dynamic pages
+- HW3 - API
+- HW4 - React (optional)
 
 In progress:
-- HW3 - API
+- HW5 - backend
+- HW6 - deploy
